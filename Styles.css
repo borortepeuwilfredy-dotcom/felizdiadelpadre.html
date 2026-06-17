@@ -1,0 +1,134 @@
+/* Styles for feliz_dia_papa */
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; }
+
+body {
+    background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%);
+    min-height: 100vh;
+    display: flex; justify-content: center; align-items: center;
+    overflow: hidden; perspective: 1500px;
+    color: #ecf0f1;
+}
+
+/* --- Estilos de la Caja de Herramientas --- */
+.toolbox-wrapper {
+    position: relative; width: 340px; height: 260px;
+    background-color: #34495e; /* Color base piedra/madera */
+    border-radius: 12px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+    transition: transform 1s ease-in-out, opacity 0.5s;
+    z-index: 10;
+}
+
+/* Detalles de madera y textura de la caja */
+.toolbox-wrapper::before {
+    content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    border-radius: 12px;
+    background: repeating-linear-gradient(45deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 2px, transparent 2px, transparent 10px);
+    border: 4px solid #2c3e50;
+    z-index: 1;
+}
+
+/* Tapa de la caja (se abre) */
+.toolbox-lid {
+    position: absolute; top: 0; left: 0; width: 100%; height: 50%;
+    background-color: #5d4037; /* Café madera */
+    border-radius: 12px 12px 0 0;
+    border-bottom: 4px solid #2c3e50;
+    transform-origin: top;
+    transition: transform 1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    z-index: 5;
+}
+
+/* --- Candados Interactivos --- */
+.locks-container {
+    position: absolute; bottom: 20px; left: 0; width: 100%;
+    display: flex; justify-content: space-around;
+    padding: 0 30px; z-index: 6;
+}
+
+.lock {
+    width: 70px; height: 70px;
+    background-color: #00A86B; /* Jade Maya */
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3), inset 0 2px 5px rgba(255,255,255,0.2);
+    cursor: pointer;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    transition: transform 0.3s, background-color 0.3s;
+    -webkit-user-select: none; /* Safari 3+, iOS 3+ */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+ */
+    user-select: none;
+}
+
+.lock:hover { transform: scale(1.05); background-color: #00c880; }
+    
+/* Estado de desbloqueado */
+.lock.unlocked {
+    background-color: #f1c40f; /* Dorado */
+    transform: scale(0.9) translateY(5px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    pointer-events: none;
+}
+
+.lock-icon { width: 35px; height: 35px; fill: #2c3e50; transition: fill 0.3s; }
+.lock.unlocked .lock-icon { fill: #fff; }
+.lock-label { font-size: 0.7rem; font-weight: bold; margin-top: 4px; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
+
+/* --- Animaciones de Impacto y Chispas --- */
+@keyframes sparks {
+    0% { transform: translate(0, 0) scale(1); opacity: 1; }
+    100% { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; }
+}
+
+.spark {
+    position: fixed; width: 6px; height: 6px; background-color: #f1c40f; border-radius: 50%;
+    pointer-events: none; z-index: 50;
+    animation: sparks 0.6s ease-out forwards;
+}
+
+/* --- Contenido Oculto / La Carta --- */
+.revealed-card {
+    position: fixed; top: 10%; left: 50%; transform: translateX(-50%) translateY(50px) scale(0.8);
+    width: 90%; max-width: 450px;
+    background-color: #fff;
+    color: #2c3e50;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.4);
+    opacity: 0; pointer-events: none;
+    z-index: 5;
+    transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1s, opacity 0.8s ease 1s;
+    text-align: center;
+}
+
+/* Cuando la carta se revela */
+.open-state .revealed-card {
+    opacity: 1; pointer-events: auto;
+    transform: translateX(-50%) translateY(0) scale(1);
+}
+
+.open-state .toolbox-lid { transform: rotateX(-160deg); z-index: 2; }
+.open-state .toolbox-wrapper { transform: translateY(100vh) rotateX(20deg); opacity: 0; }
+
+/* --- Título y Kit Chapín --- */
+.date-badge { font-size: 0.9rem; font-weight: bold; color: #fff; background-color: #00A86B; padding: 5px 15px; border-radius: 50px; display: inline-block; margin-bottom: 15px; }
+.revealed-card h1 { font-size: 2.2rem; color: #2c3e50; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
+
+.kit-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 30px; padding: 10px;
+    border: 2px dashed #00A86B; border-radius: 10px;
+}
+
+.kit-item { display: flex; align-items: center; text-align: left; background-color: #f8f9fa; padding: 10px; border-radius: 8px; }
+.kit-icon { width: 50px; height: 50px; margin-right: 15px; fill: #00A86B; flex-shrink: 0; }
+.kit-text { flex-grow: 1; }
+.kit-title { font-weight: bold; font-size: 0.95rem; color: #2c3e50; }
+.kit-desc { font-size: 0.8rem; color: #7f8c8d; }
+
+/* --- Carta Personalizada --- */
+.letter-content { font-style: italic; font-size: 1rem; line-height: 1.6; color: #34495e; max-width: 380px; margin: 0 auto; }
+.letter-content p { margin-bottom: 10px; }
+.signature { font-weight: bold; margin-top: 20px; color: #00A86B; font-size: 1.1rem; }
+
+/* --- Partículas de Celebración --- */
+.particle { position: absolute; pointer-events: none; z-index: 20; }
